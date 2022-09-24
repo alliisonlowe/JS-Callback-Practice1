@@ -6,26 +6,38 @@ function move(element) {
         element.style.bottom = bottom + 'px'
     }
 
-    function moveWithArrowKeys(left, bottom) {
+    function moveWithArrowKeys(left, bottom, callback) {
         let direction = null;
         let x = 100;
         let y = 250;
 
-            element.style.left = x + 'px'
-            element.style.bottom = y + 'px'
+        element.style.left = x + 'px'
+        element.style.bottom = y + 'px'
 
-        function moveCharacter(){
-            if(direction === 'west'){
-                x-=1
+        function moveCharacter() {
+            if (direction === 'west') {
+                if (x < 0){
+                   x = 0;
+                 }
+                x -= 1
             }
-            if(direction === 'north'){
-                y+=1
+            if (direction === 'north') {
+                if (y > window.innerHeight-75){
+                    y = window.innerHeight-75;
+                  }
+                y += 1
             }
-            if(direction === 'east'){
-                x+=1
+            if (direction === 'east') {
+                if (x > window.innerWidth-50){
+                    x = window.innerWidth-50;
+                  }
+                x += 1
             }
-            if(direction === 'south'){
-                y-=1
+            if (direction === 'south') {
+                if (y<100){
+                    y=100
+                }
+                y -= 1
             }
 
             element.style.left = x + 'px'
@@ -33,6 +45,7 @@ function move(element) {
         }
 
         setInterval(moveCharacter, 1)
+        
 
         document.addEventListener('keydown', function (e) {
             if (e.repeat) return;
@@ -49,11 +62,16 @@ function move(element) {
             if (e.key === 'ArrowDown') {
                 direction = 'south'
             }
+
+            callback(direction)
         })
 
         document.addEventListener('keyup', function (e) {
             direction = null
+            callback(direction)
         })
+
+       
     }
 
     return {
